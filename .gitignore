@@ -1,0 +1,25 @@
+# 빌드된 실행 파일 무시
+*.out
+*.exe
+*.o
+*.obj
+*.elf
+*.bin
+*.a
+*.so
+*.dll
+
+# VSCode 설정 폴더 무시 (필요시)
+.vscode/
+
+# 백업 파일들 무시
+*~
+*.swp
+.DS_Store
+Thumbs.db
+
+# 로그 파일 무시
+*.log
+
+# 환경 변수 파일 등 (보안상)
+.env
