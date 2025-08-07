@@ -5,7 +5,7 @@ Lab Test: Section A - Linked List Questions
 Purpose: Implementing the required functions for Question 7 */
 
 //////////////////////////////////////////////////////////////////////////////////
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,26 +14,26 @@ Purpose: Implementing the required functions for Question 7 */
 typedef struct _listnode
 {
 	int item;
-	struct _listnode *next;
+	struct _listnode* next;
 } ListNode;			// You should not change the definition of ListNode
 
 typedef struct _linkedlist
 {
 	int size;
-	ListNode *head;
+	ListNode* head;
 } LinkedList;			// You should not change the definition of LinkedList
 
 
 //////////////////////// function prototypes /////////////////////////////////////
 
 // You should not change the prototype of this function
-void RecursiveReverse(ListNode **ptrHead);
+void RecursiveReverse(ListNode** ptrHead);
 
-void printList(LinkedList *ll);
-void removeAllItems(LinkedList *ll);
-ListNode * findNode(LinkedList *ll, int index);
-int insertNode(LinkedList *ll, int index, int value);
-int removeNode(LinkedList *ll, int index);
+void printList(LinkedList* ll);
+void removeAllItems(LinkedList* ll);
+ListNode* findNode(LinkedList* ll, int index);
+int insertNode(LinkedList* ll, int index, int value);
+int removeNode(LinkedList* ll, int index);
 
 
 //////////////////////////// main() //////////////////////////////////////////////
@@ -85,16 +85,29 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RecursiveReverse(ListNode **ptrHead)
+void RecursiveReverse(ListNode** ptrHead)
 {
-	/* add your code here */
+	// 예외처리
+	if (ptrHead == NULL || *ptrHead == NULL || (*ptrHead)->next == NULL)
+		return;
+
+	// 재귀적으로 나머지 리스트 뒤집기
+	ListNode* rest = (*ptrHead)->next;
+	RecursiveReverse(&rest);
+
+	// 뒤집은 리스트의 마지막에 현재 노드 붙이기
+	(*ptrHead)->next->next = *ptrHead;
+	(*ptrHead)->next = NULL;
+
+	// head를 새로운 head(rest의 맨 끝)가 가리키도록 갱신
+	*ptrHead = rest;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void printList(LinkedList *ll){
+void printList(LinkedList* ll) {
 
-	ListNode *cur;
+	ListNode* cur;
 	if (ll == NULL)
 		return;
 	cur = ll->head;
@@ -109,9 +122,9 @@ void printList(LinkedList *ll){
 	printf("\n");
 }
 
-ListNode * findNode(LinkedList *ll, int index){
+ListNode* findNode(LinkedList* ll, int index) {
 
-	ListNode *temp;
+	ListNode* temp;
 
 	if (ll == NULL || index < 0 || index >= ll->size)
 		return NULL;
@@ -121,7 +134,7 @@ ListNode * findNode(LinkedList *ll, int index){
 	if (temp == NULL || index < 0)
 		return NULL;
 
-	while (index > 0){
+	while (index > 0) {
 		temp = temp->next;
 		if (temp == NULL)
 			return NULL;
@@ -131,15 +144,15 @@ ListNode * findNode(LinkedList *ll, int index){
 	return temp;
 }
 
-int insertNode(LinkedList *ll, int index, int value){
+int insertNode(LinkedList* ll, int index, int value) {
 
-	ListNode *pre, *cur;
+	ListNode* pre, * cur;
 
 	if (ll == NULL || index < 0 || index > ll->size + 1)
 		return -1;
 
 	// If empty list or inserting first node, need to update head pointer
-	if (ll->head == NULL || index == 0){
+	if (ll->head == NULL || index == 0) {
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
 		ll->head->item = value;
@@ -151,7 +164,7 @@ int insertNode(LinkedList *ll, int index, int value){
 
 	// Find the nodes before and at the target position
 	// Create a new node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL) {
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
 		pre->next->item = value;
@@ -164,16 +177,16 @@ int insertNode(LinkedList *ll, int index, int value){
 }
 
 
-int removeNode(LinkedList *ll, int index){
+int removeNode(LinkedList* ll, int index) {
 
-	ListNode *pre, *cur;
+	ListNode* pre, * cur;
 
 	// Highest index we can remove is size-1
 	if (ll == NULL || index < 0 || index >= ll->size)
 		return -1;
 
 	// If removing first node, need to update head pointer
-	if (index == 0){
+	if (index == 0) {
 		cur = ll->head->next;
 		free(ll->head);
 		ll->head = cur;
@@ -184,7 +197,7 @@ int removeNode(LinkedList *ll, int index){
 
 	// Find the nodes before and after the target position
 	// Free the target node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL) {
 
 		if (pre->next == NULL)
 			return -1;
@@ -199,12 +212,12 @@ int removeNode(LinkedList *ll, int index){
 	return -1;
 }
 
-void removeAllItems(LinkedList *ll)
+void removeAllItems(LinkedList* ll)
 {
-	ListNode *cur = ll->head;
-	ListNode *tmp;
+	ListNode* cur = ll->head;
+	ListNode* tmp;
 
-	while (cur != NULL){
+	while (cur != NULL) {
 		tmp = cur->next;
 		free(cur);
 		cur = tmp;
