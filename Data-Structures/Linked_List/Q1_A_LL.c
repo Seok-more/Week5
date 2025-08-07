@@ -116,7 +116,7 @@ while (now != NULL && now->item < item)
 	idx++;
 }
 
-// 맨 앞에 삽입해야 하는 경우
+	// 맨 앞에 삽입해야 하는 경우
 if (prev == NULL) 
 {
 	newNode->next = ll->head;
@@ -131,6 +131,7 @@ else
 
 ll->size++;
 return idx;
+
 
 	
 
