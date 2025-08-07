@@ -88,52 +88,48 @@ int main()
 
 int insertSortedLL(LinkedList *ll, int item)
 {
-	// 새 노드를 만들어 item 값을 넣는다
-ListNode* newNode = malloc(sizeof(ListNode));
-if (!newNode) return -1; // 메모리 할당 실패
+		// 새 노드를 만들어 item 값을 넣는다
+	ListNode* newNode = malloc(sizeof(ListNode));
+	if (!newNode) return -1; // 메모리 할당 실패
 
-newNode->item = item;
-newNode->next = NULL;
+	newNode->item = item;
+	newNode->next = NULL;
 
-// 리스트가 비어있으면 맨 앞에 삽입
-if (ll->head == NULL) 
-{
-	ll->head = newNode;
-	ll->size++;
-	return 0; // 인덱스 0에 삽입됨
-}
+	// 리스트가 비어있으면 맨 앞에 삽입
+	if (ll->head == NULL) 
+	{
+		ll->head = newNode;
+		ll->size++;
+		return 0; // 인덱스 0에 삽입됨
+	}
 
-// 삽입 위치 찾기
-ListNode* prev = NULL;
-ListNode* now = ll->head;
-int idx = 0;
+	// 삽입 위치 찾기
+	ListNode* prev = NULL;
+	ListNode* now = ll->head;
+	int idx = 0;
 
 // now가 item보다 작으면 순회
-while (now != NULL && now->item < item) 
-{
-	prev = now;
-	now = now->next;
-	idx++;
-}
+	while (now != NULL && now->item < item) 
+	{
+		prev = now;
+		now = now->next;
+		idx++;
+	}
 
-	// 맨 앞에 삽입해야 하는 경우
-if (prev == NULL) 
-{
-	newNode->next = ll->head;
-	ll->head = newNode;
-}
-else 
-{
-	// 중간 또는 맨 뒤에 삽입
-	prev->next = newNode;
-	newNode->next = now;
-}
-
-ll->size++;
-return idx;
-
-
-	
+		// 맨 앞에 삽입해야 하는 경우
+	if (prev == NULL) 
+	{
+		newNode->next = ll->head;
+		ll->head = newNode;
+	}
+	else 	
+	{
+		// 중간 또는 맨 뒤에 삽입
+		prev->next = newNode;
+		newNode->next = now;
+	}
+	ll->size++;
+	return idx;
 
 }
 
