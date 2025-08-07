@@ -92,15 +92,14 @@ void moveOddItemsToBack(LinkedList* ll)
 	// 예외처리
 	if (ll == NULL || ll->size == 0)
 	{
-		return;
+		return 0;
 	}
 
 	int goal = ll->size;
 	for (int i = 0; i < goal;)
 	{
 		ListNode* now = findNode(ll, i);
-		if (now == NULL)
-			return;
+		if (now == NULL) return 0;
 		if (now->item % 2 != 0) 
 		{
 			int odd = now->item;

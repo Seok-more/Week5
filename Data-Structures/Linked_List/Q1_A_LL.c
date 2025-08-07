@@ -90,7 +90,7 @@ int insertSortedLL(LinkedList *ll, int item)
 {
 		// 새 노드를 만들어 item 값을 넣는다
 	ListNode* newNode = malloc(sizeof(ListNode));
-	if (!newNode) return -1; // 메모리 할당 실패
+	if (!newNode) return 0; // 메모리 할당 실패
 
 	newNode->item = item;
 	newNode->next = NULL;
