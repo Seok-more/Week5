@@ -86,10 +86,8 @@ int main()
 
 void moveEvenItemsToBack(LinkedList* ll)
 {
-	if (ll == NULL || ll->size == 0)
-	{
-		return 0;
-	}
+	// 예외처리
+	if (ll == NULL || ll->size == 0) return 0;
 
 	int goal = ll->size;
 	for (int i = 0; i < goal;)

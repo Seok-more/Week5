@@ -88,8 +88,7 @@ int main()
 void RecursiveReverse(ListNode** ptrHead)
 {
 	// 예외처리
-	if (ptrHead == NULL || *ptrHead == NULL || (*ptrHead)->next == NULL)
-		return;
+	if (ptrHead == NULL || *ptrHead == NULL || (*ptrHead)->next == NULL) return 0;
 
 	// 재귀적으로 나머지 리스트 뒤집기
 	ListNode* rest = (*ptrHead)->next;
