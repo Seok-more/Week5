@@ -108,26 +108,15 @@ void alternateMergeLinkedList(LinkedList* ll1, LinkedList* ll2)
 	// 1,2,3,4
 	// a,b,c,d
 	// 1,a,2,b,3,c,4,d
-	for (int i = 0; i < ll1->size || i < ll2->size; i++)
-	{	
-		ListNode* node1 = findNode(ll1, i);
-		ListNode* node2 = findNode(ll2, i);
-
-		if (node1 != NULL && node2 != NULL) {
-			// 둘 다 있으면, node1, node2 순으로
-			insertNode(ll1, i * 2 + 1, node2->item);
-		}
-		else if (node1 != NULL) 
-		{
-			// 1만 있으면 그대로 두고
-			continue;
-		}
-		else if (node2 != NULL) 
-		{
-			// 2만 있으면 나머지를 뒤에 붙여주고
-			insertNode(ll1, ll1->size, node2->item);
-		}
-	}
+	int i = 1; // ll1에 삽입할 위치
+    while (ll2->size > 0 && i <= ll1->size) {
+        // ll2의 첫 번째 값을 ll1의 i번째에 삽입
+        insertNode(ll1, i, ll2->head->item);
+        // 넣은 노드 제거
+        removeNode(ll2, 0);
+        // 다음 삽입 위치는 2칸 뒤로 (1개 넣었으니까 size가 1 증가함)
+        i += 2;
+    }
 
 }
 
