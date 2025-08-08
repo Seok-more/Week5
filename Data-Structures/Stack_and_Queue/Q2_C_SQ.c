@@ -129,6 +129,8 @@ void removeEvenValues(Stack* s)
 {
 	if (s == NULL || isEmptyStack(s)) return;
 
+	// 사실 임시로 하는 tempsStack은 Stack*이 아니라 Stack인 그냥 변수인게 더좋긴함
+	// 이유 : Stack*은 malloc/free를 해야하고 초기화도 해야하는데, Stack은 함수가 끝나면 자동으로 스택메모리에서 해제되니까
 	int goal = s->ll.size;
 	Stack* tempStack = malloc(sizeof(Stack));
 	tempStack->ll.head = NULL;

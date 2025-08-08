@@ -125,6 +125,7 @@ int isStackPairwiseConsecutive(Stack* s)
 			{
 				push(s, pop(tempStack));
 			}
+			free(tempStack);
 			return 0;
 		}
 
@@ -137,6 +138,7 @@ int isStackPairwiseConsecutive(Stack* s)
 	{
 		push(s, pop(tempStack));
 	}
+	free(tempStack);
 	return 1;
 }
 

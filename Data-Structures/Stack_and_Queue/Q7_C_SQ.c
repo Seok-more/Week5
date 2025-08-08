@@ -5,7 +5,7 @@ Lab Test: Section C - Stack and Queue Questions
 Purpose: Implementing the required functions for Question 7 */
 
 //////////////////////////////////////////////////////////////////////////////////
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,13 +16,13 @@ Purpose: Implementing the required functions for Question 7 */
 typedef struct _listnode
 {
 	int item;
-	struct _listnode *next;
+	struct _listnode* next;
 } ListNode;	// You should not change the definition of ListNode
 
 typedef struct _linkedlist
 {
 	int size;
-	ListNode *head;
+	ListNode* head;
 } LinkedList;	// You should not change the definition of LinkedList
 
 
@@ -34,19 +34,19 @@ typedef struct stack
 ///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototypes of these functions
-int balanced(char *expression);
+int balanced(char* expression);
 
-void push(Stack *s, int item);
-int pop(Stack *s);
-int peek(Stack *s);
-int isEmptyStack(Stack *s);
-void removeAllItemsFromStack(Stack *s);
+void push(Stack* s, int item);
+int pop(Stack* s);
+int peek(Stack* s);
+int isEmptyStack(Stack* s);
+void removeAllItemsFromStack(Stack* s);
 
-void printList(LinkedList *ll);
-void removeAllItems(LinkedList *ll);
-ListNode * findNode(LinkedList *ll, int index);
-int insertNode(LinkedList *ll, int index, int value);
-int removeNode(LinkedList *ll, int index);
+void printList(LinkedList* ll);
+void removeAllItems(LinkedList* ll);
+ListNode* findNode(LinkedList* ll, int index);
+int insertNode(LinkedList* ll, int index, int value);
+int removeNode(LinkedList* ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
@@ -83,11 +83,11 @@ int main()
 			printf("Enter expressions without spaces to check whether it is balanced or not: ");
 			scanf("%s", str);
 			break;
-        case 2:
-            if(balanced(str))
-                printf("not balanced!\n");
-            else
-                printf("balanced!\n");
+		case 2:
+			if (balanced(str))
+				printf("not balanced!\n");
+			else
+				printf("balanced!\n");
 			break;
 		case 0:
 			break;
@@ -102,14 +102,66 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////
-int balanced(char *expression)
+int balanced(char* expression)
 {
-/* add your code here */
+	// 예외처리
+	
+	Stack* tempStack = malloc(sizeof(Stack));
+	tempStack->ll.head = NULL;
+	tempStack->ll.size = 0;
+
+	for (int i = 0; expression[i] != '\0'; i++)
+	{
+		char ch = expression[i];
+		if (ch == '(' || ch == '[' || ch == '{')
+		{
+			push(tempStack, ch);
+		}
+		else if (ch == ')')
+		{
+			if (peek(tempStack) == '(')
+			{
+				pop(tempStack);
+			}
+		}
+		else if (ch == ']')
+		{
+			if (peek(tempStack) == '[')
+			{
+				pop(tempStack);
+			}
+		}
+		else if (ch == '}')
+		{
+			if (peek(tempStack) == '{')
+			{
+				pop(tempStack);
+			}
+		}
+		else
+		{
+			free(tempStack);
+			return 1;
+		}
+
+	}
+
+	if (isEmptyStack(tempStack))
+	{
+		free(tempStack);
+		return 0; 
+	}
+	else
+	{
+		free(tempStack);
+		return 1;
+	}
+
 }
 
 ////////////////////////////////////////////////////////////
 
-void removeAllItemsFromStack(Stack *s)
+void removeAllItemsFromStack(Stack* s)
 {
 	if (s == NULL)
 		return;
@@ -120,12 +172,12 @@ void removeAllItemsFromStack(Stack *s)
 }
 
 
-void removeAllItems(LinkedList *ll)
+void removeAllItems(LinkedList* ll)
 {
-	ListNode *cur = ll->head;
-	ListNode *tmp;
+	ListNode* cur = ll->head;
+	ListNode* tmp;
 
-	while (cur != NULL){
+	while (cur != NULL) {
 		tmp = cur->next;
 		free(cur);
 		cur = tmp;
@@ -136,12 +188,12 @@ void removeAllItems(LinkedList *ll)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-void push(Stack *s, int item)
+void push(Stack* s, int item)
 {
 	insertNode(&(s->ll), 0, item);
 }
 
-int pop(Stack *s)
+int pop(Stack* s)
 {
 	int item;
 	if (s->ll.head != NULL)
@@ -154,14 +206,14 @@ int pop(Stack *s)
 		return MIN_INT;
 }
 
-int peek(Stack *s){
-    if(isEmptyStack(s))
-        return MIN_INT;
-    else
-        return ((s->ll).head)->item;
+int peek(Stack* s) {
+	if (isEmptyStack(s))
+		return MIN_INT;
+	else
+		return ((s->ll).head)->item;
 }
 
-int isEmptyStack(Stack *s)
+int isEmptyStack(Stack* s)
 {
 	if ((s->ll).size == 0)
 		return 1;
@@ -170,9 +222,9 @@ int isEmptyStack(Stack *s)
 }
 
 
-void printList(LinkedList *ll){
+void printList(LinkedList* ll) {
 
-	ListNode *cur;
+	ListNode* cur;
 	if (ll == NULL)
 		return;
 
@@ -187,9 +239,9 @@ void printList(LinkedList *ll){
 	printf("\n");
 }
 
-ListNode * findNode(LinkedList *ll, int index){
+ListNode* findNode(LinkedList* ll, int index) {
 
-	ListNode *temp;
+	ListNode* temp;
 
 	if (ll == NULL || index < 0 || index >= ll->size)
 		return NULL;
@@ -199,7 +251,7 @@ ListNode * findNode(LinkedList *ll, int index){
 	if (temp == NULL || index < 0)
 		return NULL;
 
-	while (index > 0){
+	while (index > 0) {
 		temp = temp->next;
 		if (temp == NULL)
 			return NULL;
@@ -209,15 +261,15 @@ ListNode * findNode(LinkedList *ll, int index){
 	return temp;
 }
 
-int insertNode(LinkedList *ll, int index, int value){
+int insertNode(LinkedList* ll, int index, int value) {
 
-	ListNode *pre, *cur;
+	ListNode* pre, * cur;
 
 	if (ll == NULL || index < 0 || index > ll->size + 1)
 		return -1;
 
 	// If empty list or inserting first node, need to update head pointer
-	if (ll->head == NULL || index == 0){
+	if (ll->head == NULL || index == 0) {
 		cur = ll->head;
 		ll->head = malloc(sizeof(ListNode));
 		if (ll->head == NULL)
@@ -233,7 +285,7 @@ int insertNode(LinkedList *ll, int index, int value){
 
 	// Find the nodes before and at the target position
 	// Create a new node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL) {
 		cur = pre->next;
 		pre->next = malloc(sizeof(ListNode));
 		if (pre->next == NULL)
@@ -250,16 +302,16 @@ int insertNode(LinkedList *ll, int index, int value){
 }
 
 
-int removeNode(LinkedList *ll, int index){
+int removeNode(LinkedList* ll, int index) {
 
-	ListNode *pre, *cur;
+	ListNode* pre, * cur;
 
 	// Highest index we can remove is size-1
 	if (ll == NULL || index < 0 || index >= ll->size)
 		return -1;
 
 	// If removing first node, need to update head pointer
-	if (index == 0){
+	if (index == 0) {
 		cur = ll->head->next;
 		free(ll->head);
 		ll->head = cur;
@@ -269,7 +321,7 @@ int removeNode(LinkedList *ll, int index){
 
 	// Find the nodes before and after the target position
 	// Free the target node and reconnect the links
-	if ((pre = findNode(ll, index - 1)) != NULL){
+	if ((pre = findNode(ll, index - 1)) != NULL) {
 
 		if (pre->next == NULL)
 			return -1;
