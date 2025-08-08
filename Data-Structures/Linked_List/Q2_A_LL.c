@@ -105,9 +105,11 @@ int main()
 
 void alternateMergeLinkedList(LinkedList* ll1, LinkedList* ll2)
 {
-	// 1,2,3,4
+	// 1,2,3
 	// a,b,c,d
-	// 1,a,2,b,3,c,4,d
+	
+	// 1,a,2,b,3,c
+	// d
 
 	// 예외처리
 	if (ll1 == NULL || ll2 == NULL || ll1->size == 0 || ll2->size == 0) return;

@@ -103,6 +103,10 @@ int main()
 //////////////////////////////////////////////////////////////////////////////////
 
 void frontBackSplitLinkedList(LinkedList* ll, LinkedList* resultFrontList, LinkedList* resultBackList)
+
+// 12345
+//123
+// 45
 {
 	// 예외처리
 	if (ll == NULL || resultFrontList == NULL || resultBackList == NULL || ll->size == 0) return;
@@ -121,7 +125,6 @@ void frontBackSplitLinkedList(LinkedList* ll, LinkedList* resultFrontList, Linke
 	{
 		insertNode(resultBackList, resultBackList->size, now->item);
 		now = now->next;
-	}
 
 }
 
