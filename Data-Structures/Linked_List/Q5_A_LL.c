@@ -105,7 +105,7 @@ int main()
 void frontBackSplitLinkedList(LinkedList* ll, LinkedList* resultFrontList, LinkedList* resultBackList)
 {
 	// 예외처리
-	if (ll == NULL || resultFrontList == NULL || resultBackList == NULL || ll->size == 0) return 0;
+	if (ll == NULL || resultFrontList == NULL || resultBackList == NULL || ll->size == 0) return;
 
 	int mid = (ll->size + 1) / 2;
 	ListNode* now = ll->head;

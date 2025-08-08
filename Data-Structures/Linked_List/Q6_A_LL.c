@@ -90,7 +90,7 @@ int main()
 int moveMaxToFront(ListNode** ptrHead)
 {
 	// 예외 처리
-	if (ptrHead == NULL || *ptrHead == NULL) return -1;
+	if (ptrHead == NULL || *ptrHead == NULL) return 0;
 
 	ListNode* now = *ptrHead;
 	ListNode* maxNode = now;

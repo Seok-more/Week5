@@ -110,7 +110,7 @@ void alternateMergeLinkedList(LinkedList* ll1, LinkedList* ll2)
 	// 1,a,2,b,3,c,4,d
 
 	// 예외처리
-	if (ll1 == NULL || ll2 == NULL || ll1->size == 0 || ll2->size == 0) return 0;
+	if (ll1 == NULL || ll2 == NULL || ll1->size == 0 || ll2->size == 0) return;
 
 	int i = 1; // ll1에 삽입할 위치
 	while (ll2->size > 0 && i <= ll1->size) 

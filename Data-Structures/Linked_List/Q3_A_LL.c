@@ -90,7 +90,7 @@ void moveOddItemsToBack(LinkedList* ll)
 	// 아님 걍 처음 순회할 정도를 정해놓고 바로바로 연결해줄까 -> 이러자
 
 	// 예외처리
-	if (ll == NULL || ll->size == 0) return 0;
+	if (ll == NULL || ll->size == 0) return;
 
 	int goal = ll->size;
 	for (int i = 0; i < goal;)
