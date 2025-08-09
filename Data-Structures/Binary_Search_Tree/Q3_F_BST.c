@@ -5,41 +5,41 @@ Lab Test: Section F - Binary Search Trees Questions
 Purpose: Implementing the required functions for Question 3 */
 
 //////////////////////////////////////////////////////////////////////////////////
-
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct _bstnode{
+typedef struct _bstnode {
 	int item;
-	struct _bstnode *left;
-	struct _bstnode *right;
+	struct _bstnode* left;
+	struct _bstnode* right;
 } BSTNode;   // You should not change the definition of BSTNode
 
-typedef struct _stackNode{
-	BSTNode *data;
-	struct _stackNode *next;
+typedef struct _stackNode {
+	BSTNode* data;
+	struct _stackNode* next;
 }StackNode; // You should not change the definition of StackNode
 
 typedef struct _stack
 {
-	StackNode *top;
+	StackNode* top;
 }Stack; // You should not change the definition of Stack
 
 ///////////////////////// function prototypes ////////////////////////////////////
 
 // You should not change the prototypes of these functions
-void preOrderIterative(BSTNode *root);
+void preOrderIterative(BSTNode* root);
 
-void insertBSTNode(BSTNode **node, int value);
+void insertBSTNode(BSTNode** node, int value);
 
 // You may use the following functions or you may write your own
-void push(Stack *stack, BSTNode *node);
-BSTNode *pop(Stack *s);
-BSTNode *peek(Stack *s);
-int isEmpty(Stack *s);
-void removeAll(BSTNode **node);
+void push(Stack* stack, BSTNode* node);
+BSTNode* pop(Stack* s);
+BSTNode* peek(Stack* s);
+int isEmpty(Stack* s);
+void removeAll(BSTNode** node);
 
 ///////////////////////////// main() /////////////////////////////////////////////
 
@@ -49,7 +49,7 @@ int main()
 	c = 1;
 
 	//Initialize the Binary Search Tree as an empty Binary Search Tree
-	BSTNode * root;
+	BSTNode* root;
 	root = NULL;
 
 	printf("1: Insert an integer into the binary search tree;\n");
@@ -89,14 +89,39 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void preOrderIterative(BSTNode *root)
+void preOrderIterative(BSTNode* root)
 {
-	 /* add your code here */
+	// 반복문으로 전위순회하랜다
+	// 푸쉬 팝만 사용하셈
+
+	if (root == NULL) return;
+
+	Stack* tempStack = malloc(sizeof(Stack));
+	tempStack->top = NULL;
+
+	push(tempStack, root);
+
+	while (!isEmpty(tempStack))
+	{
+		BSTNode* now = pop(tempStack);
+		printf("%d ", now->item);
+
+		// 오른쪽 부터 넣어야 왼쪽이 먼저 나와서 전위가 됨
+		if (now->right != NULL) {
+			push(tempStack, now->right);
+		}
+		if (now->left != NULL) {
+			push(tempStack, now->left);
+		}
+	}
+
+	free(tempStack);
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void insertBSTNode(BSTNode **node, int value){
+void insertBSTNode(BSTNode** node, int value) {
 	if (*node == NULL)
 	{
 		*node = malloc(sizeof(BSTNode));
@@ -113,7 +138,7 @@ void insertBSTNode(BSTNode **node, int value){
 		{
 			insertBSTNode(&((*node)->left), value);
 		}
-		else if (value >(*node)->item)
+		else if (value > (*node)->item)
 		{
 			insertBSTNode(&((*node)->right), value);
 		}
@@ -124,9 +149,9 @@ void insertBSTNode(BSTNode **node, int value){
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void push(Stack *stack, BSTNode * node)
+void push(Stack* stack, BSTNode* node)
 {
-	StackNode *temp;
+	StackNode* temp;
 
 	temp = malloc(sizeof(StackNode));
 
@@ -147,10 +172,10 @@ void push(Stack *stack, BSTNode * node)
 }
 
 
-BSTNode * pop(Stack * s)
+BSTNode* pop(Stack* s)
 {
-	StackNode *temp, *t;
-	BSTNode * ptr;
+	StackNode* temp, * t;
+	BSTNode* ptr;
 	ptr = NULL;
 
 	t = s->top;
@@ -167,9 +192,9 @@ BSTNode * pop(Stack * s)
 	return ptr;
 }
 
-BSTNode * peek(Stack * s)
+BSTNode* peek(Stack* s)
 {
-	StackNode *temp;
+	StackNode* temp;
 	temp = s->top;
 	if (temp != NULL)
 		return temp->data;
@@ -177,7 +202,7 @@ BSTNode * peek(Stack * s)
 		return NULL;
 }
 
-int isEmpty(Stack *s)
+int isEmpty(Stack* s)
 {
 	if (s->top == NULL)
 		return 1;
@@ -186,7 +211,7 @@ int isEmpty(Stack *s)
 }
 
 
-void removeAll(BSTNode **node)
+void removeAll(BSTNode** node)
 {
 	if (*node != NULL)
 	{
