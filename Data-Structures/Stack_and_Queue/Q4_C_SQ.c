@@ -137,6 +137,28 @@ void reverse(Queue* q)
 	
 }
 
+
+void reverse_2(Queue* q)
+{
+	if (!q || q->ll.size == 0) return;
+
+	Stack temp;
+	temp.ll.head = NULL;
+	temp.ll.tail = NULL;
+	temp.ll.size = 0;
+
+	while (!isEmptyQueue(q))
+	{
+		push(&temp, dequeue(q));
+	}
+
+	while (!isEmptyStack(&temp))
+	{
+		enqueue(q, pop(&temp));
+	}
+
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 void push(Stack* s, int item) {

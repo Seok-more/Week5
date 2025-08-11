@@ -102,63 +102,41 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////
-int balanced(char* expression)
+int balanced(const char* expression)
 {
-	// [] () {} 이거 쌍이 맞으면 balanced	
-	Stack* tempStack = malloc(sizeof(Stack));
-	tempStack->ll.head = NULL;
-	tempStack->ll.size = 0;
+	Stack temp;
+	temp.ll.head = NULL;
+	temp.ll.size = 0;
 
-	for (int i = 0; expression[i] != '\0'; i++)
+	for (int i = 0; expression[i] != '\0'; i++) 
 	{
 		char ch = expression[i];
-		if (ch == '(' || ch == '[' || ch == '{')
+
+		if (ch == '(' || ch == '[' || ch == '{') 
 		{
-			push(tempStack, ch);
-		}
-		else if (ch == ')')
-		{
-			if (peek(tempStack) == '(')
-			{
-				pop(tempStack);
-			}
-		}
-		else if (ch == ']')
-		{
-			if (peek(tempStack) == '[')
-			{
-				pop(tempStack);
-			}
-		}
-		else if (ch == '}')
-		{
-			if (peek(tempStack) == '{')
-			{
-				pop(tempStack);
-			}
-		}
-		else // 뭔 다른 문자가 들어왔네
-		{
-			removeAllItemsFromStack(tempStack);
-			free(tempStack);
-			return 1;
+			push(&temp, ch);	
 		}
 
+		else if (ch == ')' || ch == ']' || ch == '}') 
+		{
+			if (isEmptyStack(&temp))
+				return 1;
+
+			char top = peek(&temp);
+			if ((ch == ')' && top == '(') ||
+				(ch == ']' && top == '[') ||
+				(ch == '}' && top == '{')) 
+			{
+				pop(&temp);
+			}
+			else 
+			{
+				return 1;
+			}
+		}
 	}
 
-	if (isEmptyStack(tempStack))
-	{
-		removeAllItemsFromStack(tempStack);
-		free(tempStack);
-		return 0; 
-	}
-	else
-	{
-		removeAllItemsFromStack(tempStack);
-		free(tempStack);
-		return 1;
-	}
-
+	return isEmptyStack(&temp) ? 0 : 1;
 }
 
 ////////////////////////////////////////////////////////////

@@ -145,6 +145,22 @@ int isStackPairwiseConsecutive(Stack* s)
 	return 1;
 }
 
+int isStackPairwiseConsecutive_2(Stack* s)
+{
+	if (!s || s->ll.size % 2 == 1 || isEmptyStack(s)) return 0;
+	
+	ListNode* now = s->ll.head;
+	while (now)
+	{
+		if (abs(now->item - now->next->item) != 1)
+		{
+			return 0;
+		}
+		now = now->next->next;
+	}
+	return 1;
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 
 void push(Stack* s, int item) {
