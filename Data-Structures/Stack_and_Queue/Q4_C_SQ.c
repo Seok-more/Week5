@@ -132,6 +132,7 @@ void reverse(Queue* q)
 		enqueue(q, item);
 	}
 
+	removeAllItems(&(tempStack->ll));
 	free(tempStack);
 	
 }

@@ -103,6 +103,9 @@ int main()
 
 int isStackPairwiseConsecutive(Stack* s)
 {
+	// 16 15 6 5 2 1 : O
+	// 16 14 6 5 2 1 : X
+	// 16 15 6 5 2   : X
 	if (s == NULL || isEmptyStack(s)) return 0;
 	if (s->ll.size % 2 != 0) return 0;
 

@@ -104,8 +104,7 @@ int main()
 ////////////////////////////////////////////////////////////
 int balanced(char* expression)
 {
-	// 예외처리
-	
+	// [] () {} 이거 쌍이 맞으면 balanced	
 	Stack* tempStack = malloc(sizeof(Stack));
 	tempStack->ll.head = NULL;
 	tempStack->ll.size = 0;
@@ -138,8 +137,9 @@ int balanced(char* expression)
 				pop(tempStack);
 			}
 		}
-		else
+		else // 뭔 다른 문자가 들어왔네
 		{
+			removeAllItemsFromStack(tempStack);
 			free(tempStack);
 			return 1;
 		}
@@ -148,11 +148,13 @@ int balanced(char* expression)
 
 	if (isEmptyStack(tempStack))
 	{
+		removeAllItemsFromStack(tempStack);
 		free(tempStack);
 		return 0; 
 	}
 	else
 	{
+		removeAllItemsFromStack(tempStack);
 		free(tempStack);
 		return 1;
 	}

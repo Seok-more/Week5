@@ -112,7 +112,10 @@ void recursiveReverse(Queue* q)
 	// 예외처리
 	if (q == NULL || isEmptyQueue(q)) return;
 	
+	// 종료
 	if (q->ll.head == NULL) return;
+
+	// 재귀
 	int temp = dequeue(q);
 	recursiveReverse(q);
 	enqueue(q, temp);

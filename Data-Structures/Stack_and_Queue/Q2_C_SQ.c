@@ -114,7 +114,9 @@ int main()
 void createStackFromLinkedList(LinkedList* ll, Stack* s)
 {
 	// 예외처리
-	if (ll == NULL || ll->size == NULL || s == NULL) return;
+	if (ll == NULL || ll->size == 0 || s == NULL) return;
+
+	removeAllItemsFromStack(s); // 스탣 일단 비움
 
 	ListNode* now = ll->head;
 	while (now != NULL)
@@ -151,6 +153,7 @@ void removeEvenValues(Stack* s)
 		push(s, pop(tempStack));
 	}
 
+	removeAllItemsFromStack(tempStack);
 	free(tempStack);
 
 }

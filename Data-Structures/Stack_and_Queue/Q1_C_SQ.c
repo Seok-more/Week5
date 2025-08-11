@@ -118,7 +118,10 @@ int main()
 void createQueueFromLinkedList(LinkedList* ll, Queue* q)
 {
 	// 예외처리
-	if (ll == NULL || ll->size == NULL) return;
+	if (ll == NULL || ll->size == 0) return;
+
+	// 큐 일단 비움
+	removeAllItemsFromQueue(q);
 
 	ListNode* now = ll->head;
 	while (now != NULL)
@@ -137,11 +140,7 @@ void removeOddValues(Queue* q)
 	for (int i = 0; i < goal; i++)
 	{
 		int temp = dequeue(q);
-		if (temp % 2 != 0)
-		{
-			continue;
-		}
-		else
+		if (temp % 2 == 0)
 		{
 			enqueue(q, temp);
 		}
