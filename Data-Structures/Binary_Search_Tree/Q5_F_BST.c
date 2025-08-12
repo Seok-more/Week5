@@ -4,7 +4,7 @@
 Lab Test: Section F - Binary Search Trees Questions
 Purpose: Implementing the required functions for Question 5
 		 Implementing 'remove node' operation for BST*/
-//////////////////////////////////////////////////////////////////////////////////
+		 //////////////////////////////////////////////////////////////////////////////////
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,9 +43,10 @@ BSTNode* removeNodeFromTree(BSTNode* root, int value);
 
 //////////////////////여기에 뭐 넣었어요////////////////////////////////
 BSTNode* removeNodeFromTree2(BSTNode* root, int value);
-BSTNode* BST_Search1(BSTNode* root, int value);
+BSTNode* BST_Search1(BSTNode* root, int value, BSTNode** parent);
 BSTNode* BST_Search2(BSTNode* root, int value);
 BSTNode* BST_Replace(BSTNode* root, BSTNode* u, BSTNode* v);
+BSTNode* BST_Next(BSTNode* node, BSTNode** parent);
 BSTNode* BST_Delete(BSTNode* root, BSTNode* deleteNode);
 
 ///////////////////////////// main() /////////////////////////////////////////////
@@ -70,7 +71,7 @@ int main()
 
 	while (c != 0)
 	{
-		printf("Please input your choice(1/2/3/0): ");
+		printf("Please input your choice(1/2/3/4/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -85,7 +86,7 @@ int main()
 			postOrderIterativeS2(root); // You need to code this function
 			printf("\n");
 			break;
-		/////////////////////////여기에 넣음//////////////////////////
+			/////////////////////////여기에 넣음//////////////////////////
 		case 3:
 			printf("Input an integer you want to remove from the Binary Search Tree: ");
 			scanf("%d", &i);
@@ -104,7 +105,7 @@ int main()
 			postOrderIterativeS2(root);
 			printf("\n");
 			break;
-		//////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////
 		case 0:
 			removeAll(&root);
 			break;
@@ -122,36 +123,41 @@ int main()
 
 void postOrderIterativeS2(BSTNode* root)
 {
-	// two stacks을 이용해서 후위순회를 해봐라
-	// 푸쉬 팝만 쓰고
-
 	if (root == NULL) return;
 
 	Stack* tempStack1 = malloc(sizeof(Stack));
-	Stack* tempStack2 = malloc(sizeof(Stack));
 	tempStack1->top = NULL;
+
+	Stack* tempStack2 = malloc(sizeof(Stack));
 	tempStack2->top = NULL;
 
 	push(tempStack1, root);
+
 	while (!isEmpty(tempStack1))
 	{
 		BSTNode* now = pop(tempStack1);
+		push(tempStack2, now);
 
 		// 이러면 tempStack2에 root, rifht, left 순으로 들어감 -> 팝하면 후위순회 순으로
 		// tempStack1은 방문 예정인 노드를 DFS 느낌으로 찾고
 		// tempStack2는 방문 완료된 노드를 기록함 -> 후위순회 역순으로 스택에 누적함
-		push(tempStack2, now);
-		if (now->left != NULL)
+		if (now->left)
+		{
 			push(tempStack1, now->left);
-		if (now->right != NULL)
+		}
+		if (now->right)
+		{
 			push(tempStack1, now->right);
-
+		}
 	}
 	while (!isEmpty(tempStack2))
 	{
 		BSTNode* now = pop(tempStack2);
 		printf("%d ", now->item);
 	}
+
+	free(tempStack1);
+	free(tempStack2);
 }
 
 // 메모리적으로 removeNodeFromTree이게 훨씬 좋음
@@ -162,32 +168,32 @@ void postOrderIterativeS2(BSTNode* root)
    deletes the key and returns the new root. Make recursive function. */
 BSTNode* removeNodeFromTree(BSTNode* root, int value)
 {
-	if (root == NULL) return NULL; 
+	if (root == NULL) return NULL;
 
 	// 삭제할 값이 현재 노드 값보다 작으면 왼쪽 서브트리에서 삭제
-	if (value < root->item) 
+	if (value < root->item)
 	{
-		
+
 		root->left = removeNodeFromTree(root->left, value);
 	}
 	// 삭제할 값이 현재 노드 값보다 크면 오른쪽 서브트리에서 삭제
-	else if (value > root->item) 
+	else if (value > root->item)
 	{
-		
+
 		root->right = removeNodeFromTree(root->right, value);
 	}
 	// 현재 노드가 삭제 대상인 경우
-	else 
+	else
 	{
 		// case 1: 자식이 없거나, 오른쪽 자식만 있는 경우
-		if (root->left == NULL) 
+		if (root->left == NULL)
 		{
 			BSTNode* temp = root->right;  // 오른쪽 자식 포인터 저장
 			free(root);                   // 현재 노드 메모리 해제
 			return temp;                  // 오른쪽 자식(또는 NULL)을 반환
 		}
 		// case 2: 왼쪽 자식만 있는 경우
-		else if (root->right == NULL) 
+		else if (root->right == NULL)
 		{
 			BSTNode* temp = root->left;   // 왼쪽 자식 포인터 저장
 			free(root);                   // 현재 노드 메모리 해제
@@ -199,7 +205,7 @@ BSTNode* removeNodeFromTree(BSTNode* root, int value)
 		BSTNode* nextParent = root;       // next 부모 노드
 		BSTNode* next = root->right;      // 오른쪽 서브트리 시작
 		while (next->left != NULL)
-		{      
+		{
 			nextParent = next;			  // 가장 왼쪽(최소값)까지 이동
 			next = next->left;
 		}
@@ -211,13 +217,13 @@ BSTNode* removeNodeFromTree(BSTNode* root, int value)
 			// next가 nextParent의 왼쪽 자식이면
 			nextParent->left = removeNodeFromTree(nextParent->left, next->item);
 		}
-		else 
+		else
 		{
 			// next가 nextParent의 오른쪽 자식이면
 			nextParent->right = removeNodeFromTree(nextParent->right, next->item);
 		}
 	}
-	return root; 
+	return root;
 }
 
 
@@ -240,37 +246,31 @@ BSTNode* removeNodeFromTree2(BSTNode* root, int value)
 
 }
 
-// 이건 반복문으로
-BSTNode* BST_Search1(BSTNode* root, int value)
+// 이건 반복문으로, 부모 노드까지 추적하도록
+BSTNode* BST_Search1(BSTNode* root, int value, BSTNode** parent)
 {
-	if (root == NULL) return NULL;
-
+	*parent = NULL;
 	BSTNode* now = root;
 
-	while (now && value != now->item)
+	while (now != NULL && now->item != value)
 	{
-		if(now->item > value)
-		{
+		*parent = now;
+		if (value < now->item)
 			now = now->left;
-		}
 		else
-		{
 			now = now->right;
-		}
 	}
-
-	return now;
-	
+	return now; 
 }
 
-// 이게 재귀적으로
+// 이게 재귀적으로 노드만 추적하도록
 BSTNode* BST_Search2(BSTNode* root, int value)
 {
 	if (root == NULL) return NULL;
 
 	BSTNode* now = root;
 
-	if(now == NULL || now->item == value)
+	if (now == NULL || now->item == value)
 	{
 		return now;
 	}
@@ -285,16 +285,16 @@ BSTNode* BST_Search2(BSTNode* root, int value)
 	}
 }
 
+
 BSTNode* BST_Delete(BSTNode* root, BSTNode* deleteNode)
 {
 	if (deleteNode == NULL) return root;
 
 	// deleteNode가 자식없음
-	if (deleteNode->left == NULL && deleteNode->right == NULL) 
+	if (deleteNode->left == NULL && deleteNode->right == NULL)
 	{
 		root = BST_Replace(root, deleteNode, NULL);
 	}
-
 	// 자식이 하나만 있음
 	else if (deleteNode->left == NULL)
 	{
@@ -307,65 +307,69 @@ BSTNode* BST_Delete(BSTNode* root, BSTNode* deleteNode)
 	// 자식이 두개 있음
 	else
 	{
-		// deleNode의 오른쪽 서브트리에서 가장 작은 값을 찾을거임(삭제할 노드의 바로 다음(next)노드)
-		BSTNode* nextParent = deleteNode; // next의 부모, 초기값은 일단 deleNode로
-		BSTNode* next = deleteNode->right;	// 오른쪽 서브트리의 시작
+		// 내 다음 노드를 찾아야함(successor)
+		BSTNode* nextParent = NULL;
+		BSTNode* next = BST_Next(deleteNode, &nextParent);
 
-		// 오른쪽 서브트리의 가장 왼쪽에 있는게(가장 작은 값) 내 다음 next겠지
-		while (next->left) 
-		{
-			nextParent = next;
-			next = next->left;
-		}
-		// next의 값을 deleteNode에 복사해줌! 즉, deleteNode를 next로 대체하고 끝단의 next를 삭제할거임
+		// next의 값을 deleteNode에 복사해줌 (deleteNode를 next로 대체)
 		deleteNode->item = next->item;
 
 		// next를 실제로 삭제함
 		if (nextParent->left == next)
 		{
 			nextParent->left = BST_Delete(nextParent->left, next);
-		}	
+		}
 		else
 		{
 			nextParent->right = BST_Delete(nextParent->right, next);
-		}	
+		}
 	}
 
 	return root;
 }
 
-// 두 연결된 노드를 서로 교체하는 함수가 필요해
+// 내 다음 노드를 구하는게 필요해
+BSTNode* BST_Next(BSTNode* node, BSTNode** parent)
+{
+	// node의 오른쪽 서브트리에서 가장 작은 노드(successor)를 반환함
+	// parent에는 next의 부모를 반환
+	if (!node || !node->right) return NULL;
+
+	*parent = node;
+	BSTNode* next = node->right;
+
+	while (next->left)
+	{
+		*parent = next;
+		next = next->left;
+	}
+	return next;
+}
+
+// 두 연결된 노드를 서로 교체하는 함수가 필요해 -> 삭제가 리프에서 일어나도록 유도
 BSTNode* BST_Replace(BSTNode* root, BSTNode* u, BSTNode* v)
 {
 	// u: 삭제할 노드
 	// v: 교체할 노드 (NULL도 가능)
 	// u를 v로 바꿀거임
 
-	if(root == NULL || u == NULL) return root;
+	if (root == NULL || u == NULL) return root;
 
-	// 루트 삭제하게?
-	if (root == u) 
+	// 루트 삭제?
+	if (root == u)
 	{
 		free(u);
 		return v; // 그럼 v가 걍 루트 됨
 	}
 
-	BSTNode* parent = root;
-	BSTNode* now = root;
-
-	while (now != NULL && now != u) 
-	{
-		parent = now;				// 현재 노드를 부모로 저장
-		if (u->item < now->item)	
-			now = now->left;		// u값이 지금 노드보다 작으면 왼쪽 찾고
-		else
-			now = now->right;		// u값이 지금 노드보다 크거나 같으면 오른쪽 찾고
-	}
+	// 삭제할 노드 찾기
+	BSTNode* parent = NULL;
+	BSTNode* now = BST_Search1(root, u->item, &parent);
 
 	if (now == NULL) return root;	// 트리에 u가 없어 
 
 	// 부모의 자식 포인터 중에서 u였던 노드를 v로 바꿔줌
-	if (parent->left == u)		
+	if (parent->left == u)
 	{
 		parent->left = v;
 	}

@@ -104,18 +104,22 @@ void preOrderIterative(BSTNode* root)
 	while (!isEmpty(tempStack))
 	{
 		BSTNode* now = pop(tempStack);
-		printf("%d ", now->item);
+		printf("%d", now);
 
-		// 오른쪽 부터 넣어야 왼쪽이 먼저 나와서 전위가 됨
-		if (now->right != NULL) {
+		// 오른쪽 부터 넣어야 왼쪽부터 나오지
+		if (now->right)
+		{
 			push(tempStack, now->right);
 		}
-		if (now->left != NULL) {
+		if (now->left)
+		{
 			push(tempStack, now->left);
 		}
-	}
 
+	}
+	
 	free(tempStack);
+	
 
 }
 

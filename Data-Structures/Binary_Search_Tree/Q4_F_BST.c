@@ -91,7 +91,6 @@ int main()
 
 void postOrderIterativeS1(BSTNode* root)
 {
-	// 어 그래그래 이제 후위형이야 알지
 	if (root == NULL) return;
 
 	Stack* tempStack = malloc(sizeof(Stack));
@@ -100,7 +99,7 @@ void postOrderIterativeS1(BSTNode* root)
 	BSTNode* now = root;
 	BSTNode* prev = NULL;
 
-	while (!isEmpty(tempStack) || now != NULL)
+	while (now || !isEmpty(tempStack))
 	{
 		// 일단 왼쪽 서브트리로 계속 이동하면서 넣어
 		while (now != NULL)
