@@ -134,7 +134,7 @@ void createQueueFromLinkedList(LinkedList* ll, Queue* q)
 void removeOddValues(Queue* q)
 {
 	// 예외처리
-	if (q == NULL) return;
+	if (q == NULL || q->ll.size == 0) return;
 
 	int goal = q->ll.size;
 	for (int i = 0; i < goal; i++)
