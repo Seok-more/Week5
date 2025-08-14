@@ -125,6 +125,7 @@ void frontBackSplitLinkedList(LinkedList* ll, LinkedList* resultFrontList, Linke
 	{
 		insertNode(resultBackList, resultBackList->size, now->item);
 		now = now->next;
+	}
 
 }
 

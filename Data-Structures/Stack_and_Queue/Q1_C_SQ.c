@@ -123,6 +123,7 @@ void createQueueFromLinkedList(LinkedList* ll, Queue* q)
 	// 큐 일단 비움
 	removeAllItemsFromQueue(q);
 
+	// 링크드 리스트의 모든 노드를 순회하기 위한 노드 포인터
 	ListNode* now = ll->head;
 	while (now != NULL)
 	{
@@ -136,12 +137,15 @@ void removeOddValues(Queue* q)
 	// 예외처리
 	if (q == NULL || q->ll.size == 0) return;
 
+	// 큐의 전체만큼 순회하기 위한 목표치
 	int goal = q->ll.size;
 	for (int i = 0; i < goal; i++)
 	{
+		// 일단 큐에서 하나의 값을 꺼내고
 		int temp = dequeue(q);
 		if (temp % 2 == 0)
 		{
+			// 짝수면 다시 넣어 -> 큐는 FIFO 구조이기에 순서가 그대로임이 보장됨
 			enqueue(q, temp);
 		}
 	}
